@@ -1,28 +1,14 @@
-is_package_installed() {
-    dpkg -l "$1" &> /dev/null
-    return $?
-}
+apt update && sudo apt full-upgrade -y
 
-install_package() {
-    if ! is_package_installed "$1"; then
-        echo "Installing $1..."
-        sudo apt install -y "$1"
-    else
-        echo "$1 It is already installed."
-    fi
-}
+rm /usr/lib/python3.11/EXTERNALLY-MANAGED*
 
-sudo apt update && sudo apt full-upgrade -y
-
-install_package "imx500-all"
-install_package "python3-opencv"
-install_package "python3-munkres"
-install_package "python3-pip"
+apt install -y imx500-all python3-opencv python3-munkres python3-pip libcap-dev libcamera-dev libcamera-apps
+apt install -y libx11-xcb1 libxcb-keysyms1 libxcb-image0 libxcb-shm0 libxcb-icccm4 libxcb-render-util0 libxcb-xinerama0 libxcb-randr0 libxcb-xfixes0 libxcb-shape0 libxcb-sync1 libxcb-present0 libxcb-cursor0
 
 echo "Installing Python Packages"
 pip install model_compression_toolkit --break-system-packages
 pip install imx500-converter[pt] --break-system-packages
-pip install Flask
+pip install PySide6
 pip install picamera2
 
 echo "All dependencies are installed :D"
